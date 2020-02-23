@@ -1,0 +1,577 @@
+<html>
+<head>
+<title>Cross-platform GUI Library Yzone (C programming)</title>
+<meta name="robots" content="all">
+<meta name="keywords" content="UNIX, Windows, C programming, cross-platform GUI">
+<meta name="description" content="Universal GUI Library Yzone ">
+<meta name="author" content="Life Software">
+</head>
+<body bgcolor="white"> 
+
+<!-- ------------------------- TOP ------------------------------------- -->
+<table width=100% border=1 cellspacing=0 cellpadding=5>
+<tr align=center>
+  <td width=20% align="center" bgcolor="yellow"> &nbsp;
+  <td align="center" bgcolor="blue"> 
+     <font color="yellow"><b>T h e &nbsp;&nbsp; L i b r a r y &nbsp;&nbsp; Y z o n e </b></font>
+  <td width=20% align="center" bgcolor="yellow">  
+     <a href="indru.html"><b>TO RUSSIAN</b></a> <br>
+</table>
+<br clear=all>
+<!-- ------------------------- TOP ------------------------------------- -->
+
+
+<br>
+<center>
+<img src="im/shot1.gif" alt="screenshot1" width="563" height="487">
+<br><br><br>                                  
+<img src="im/shot2.gif" alt="screenshot2" width="563" height="487">                
+<br><br><br>                                  
+<img src="im/shot3.gif" alt="screenshot3" width="563" height="487">                 
+</center>
+<br>
+
+
+<!-- ------------------------------------------------------------------- -->
+<center>
+<table width=90%>
+<tr><td>
+
+<center><b>
+<font size=+2 color="red">L i b r a r y &nbsp;&nbsp; Y z o n e</font> <br>
+</center></b> 
+<br>                                                            
+
+<hr><!-- ---------------------------------------------------------- -->
+
+<img src="im/logo.gif" align="right" alt="logo" border=2 width="215" height="205">
+ 
+<h2>The contents:</h2> 
+<ol><b> 
+   <li><a href="#met_intr">Introduction</a> 
+
+   <li><a href="met_open">1. OPEN: window-graphical and system primitives</a> 
+   <li><a href="met_more">2. MORE: useful additions and improve GUI functions</a> 
+   <li><a href="met_wind">3. WIND: control elements of dialogue</a> 
+
+   <li><a href="#met_conc">Conclusions</a> 
+
+</b></ol> 
+ 
+
+<br clear=all>
+<hr><!-- ---------------------------------------------------------- -->
+<a name="met_intr"></a><h3><font size=+2 color="red"><center>
+Introduction
+</center></h3></font> 
+ 
+<p align=justify>
+<b>Yzone</b> - universal cross-platform library for creation of the graphic modular 
+programs for various platform <b>UNIX</b> and <b>Microsoft Windows</b>. Yzone - the library 
+of a broad profile, however priority in it is the scientific, component - 
+algorithmic approach. 
+Introducing the library Yzone, it is necessary to mark the following moments 
+and idiosyncrasies: 
+ 
+<menu>
+<li> Yzone is <b>written on the language C</b> (instead of C ++ as the majority of 
+GUI-libraries), that gives a scoring on computing problems in 1.5-2 times (at 
+exact set-up of compilers) and more effective multisequencing. 
+ 
+<li> In Yzone cross-platforming is reached by usage of libraries of low level 
+(<b>Xlib</b> for UNIX and <b>WinAPI</b> for Microsoft Windows) in difference, for example, 
+from a known package wxWindows 
+(<a href="http://www.wxwindows.org">http://www.wxwindows.org</a>), where the 
+cumbersome, commercial libraries (Motif and MFC accordingly) will be used. 
+ 
+<li> In Yzone the <b>"natural"</b> scheme of construction of the programms will be used, 
+the basis by which one is made by <b>"modules"</b> (in particular graphic windows), 
+exchanging with a system and among themselves by <b>"messages"</b> (so originally was 
+written Windows 3.x, though last time more often will be used the scheme, where 
+the emphasis is made on "events" and their processing by separate 
+"callback"-functions). 
+ 
+<li> On the basis of the described above "natural" approach in Yzone the original 
+system of <b>modular-component</b> programming and controls of algorithms <b>ALGO</b>
+will be built in further. 
+ 
+<li> In Yzone incorporate a <b>simplicity and universality</b>, absence of superfluous 
+parts and power of representational means, logical orderliness and compactness 
+of the code, combination scientific and popular of the approaches to 
+programming. 
+
+</menu>
+ 
+All listed above allows to hope, that the library Yzone will be useful to the 
+<b>broad audience of the programmers</b>: from beginners to the professionals, from 
+wishing to write the first graphic program up to the developers of composite 
+big programmatic systems. 
+
+<br><br>
+
+<br clear=all>
+<hr size=4><!-- ---------------------------------------------------------- -->
+<a name="met_open"></a><h3><font size=+2 color="red">
+1. OPEN: window-graphical and system primitives
+</h3></font> 
+
+<p>
+<p align=justify>
+In Yzone the original <b>mixed window system</b> (system and internal windows) is 
+designed:
+<menu>
+<li> <b>system windows</b> - are real windows in the terms of the system 
+window manager, i.e. that, can be dragged by mouse on a screen, to change the 
+sizes, to coagulate into icons etc.; 
+<li> <b>internal windows</b> - graphic window 
+modules defined in the inside - library table, in main all user's members of 
+control (push button, scroll, etc.); 
+</menu>
+ 
+<p align=justify>
+Such approach allows to make a system <b>more floppy and generalpurpose</b>, to 
+reduce held system resources and to speed up graphic visual dialogue response.  
+<br> 
+In case of the simple application there is one main system window, in which one 
+the means internal windows realise user interface. In addition the system 
+dialog boxes are possible also.  
+
+<p align=justify>
+Everyone the window-module is described <b>unified</b> "callback"-function, the body 
+by which one represents one large "<b>switch</b>"-operator. Its labels "<b>case</b>" are 
+entry points in a window procedure and respond for processing of the different 
+messages, going at a module.  
+<br> 
+At any program of the library, written with Yzone there should be main 
+"callback"-function <b>MAIN</b>, which one is called first after start of the program. 
+ 
+<p align=justify>
+Thus, the standard program "<b>Hello World</b>" (with a padding button) will look 
+so: 
+
+<font size=-1>
+<pre>
+/*-------------------------------MAIN-----------------------------------*/
+long
+MAIN (PFUNC_VAR)
+{
+
+  switch (message) {
+  case YCREATE:
+    YInitWIND (); 
+
+    YBigWindow (NULL, hello_proc, "Main Window", 0,0, 200,150, 0,0,0,0, 
+                YColor("yellow"));     
+    break; 
+  }
+
+  RETURN_TRUE;
+}
+/*------------------------------hello_proc------------------------------*/
+long
+hello_proc (PFUNC_VAR)       
+{        
+  static int hPush1;
+
+  switch (message) {       
+  case YOPEN: 
+  case YDRAW:       
+    YDrawRectF (0,0, WND->w,WND->h, WND->color);        
+    YWnd (&hPush1, PUSH, "Hello World!", 20,20, WND->w-40,WND->h-40, 
+          0,0,0,0, YColor("lime"));
+    break;        
+  case YCLOSE:       
+    break; 
+  case YPUSH:
+    if (mes1 == hPush1)  exit(0); 
+  default: ;;
+  }       
+  
+  RETURN_TRUE;
+}
+/*----------------------------------------------------------------------*/
+</pre>
+</font>
+ 
+<br>
+ 
+<h3><font color="green">Description of some messages</font></h3> 
+
+<pre>
+  YOPEN      - the window opens; 
+  YDRAW      - the window is drawn; 
+  YCLOSE     - the window is closed; 
+ 
+  YSETFOCUS  - the window receives 'focus'; 
+  YKILLFOCUS - the window loses 'focus'; 
+  YDATAMADE  - there was the change in one of 'child' contol elements; 
+  YTIMER     - message from the timer (through given intervals); 
+  YKEYBOARD  - keyboard key is pressed; 
+ 
+  YLMOUSEDOWN   - left mouse key is pressed; 
+  YLMOUSEUP     - left mouse key is released; 
+  YLMOUSEMOVE   - mouse movement at a pressed left key; 
+  YLMOUSEDOUBLE - double 'click' by the left mouse key; 
+ 
+  YRMOUSEDOWN   - right mouse key is pressed; 
+  YRMOUSEUP     - right mouse key is released; 
+  YRMOUSEMOVE   - mouse movement at a pressed right key; 
+ 
+  YLRMOUSEMOVE  - mouse movement at pressed left and right keys; 
+ 
+  YKEYWORD0 | 
+  YKEYWORD1 | 
+  YKEYWORD2 |   Additional messages, dependent  
+  YKEYWORD3 |   on a context of their use; 
+  YKEYWORD4 | 
+  YKEYWORD5 | 
+</pre>
+ 
+
+<p><br>
+<h3><font color="green">Description of some functions</font></h3> 
+ 
+<pre>
+  MAIN           - first pseudo-window function receiving management; 
+
+1) <b>Group of the basic window functions:</b> 
+ 
+  YWndBig        - create a 'real' window (in terms of the window manager); 
+  YWnd           - create 'internally' window (in terms OPEN); 
+  YCloseAll      - close a window, previously by closing all child; 
+  YSend          - send the message into other window or module; 
+  YGoto          - send message to itself (onto other entrance point); 
+  YPost          - put this message in queue; 
+  YSetTimer      - start 'timer' for a window; 
+  YKillTimer     - stop 'timer'; 
+  YSetProcess    - start 'process' for a window; 
+  YKillProcess   - stop 'process'; 
+  YGetData       - receive some data from the specified window; 
+  YGetFocus      - receive the identifier of a window, owning 'focus'; 
+  YSetFocus      - set 'focus' for a window; 
+  YUpdateWnd     - redraw  window with updated data; 
+  YWndGroupBegin - 'opening bracket' for group of windows (is usual for CHECK-s); 
+  YWndGroupEnd   - 'closing bracket'; 
+  YDlg           - run dialog with the specified window procedure; 
+  YDlgEnd        - finish dialog (to close); 
+  YExit          - finish work with Y/Open; 
+ 
+2) <b>Basic graphic items (functions of drawing):</b> 
+
+  YPaintPixel     - single pixel;  
+  YPaintLine      - ordinary line ; 
+  YPaintRectB     - rectangular (only border);  
+  YPaintRectF     - rectangular (filled without border);  
+  YPaintRectFB    - rectangular (filled with border);  
+  YPaintPolyF     - polygon filled;  
+  YPaintString    - horizontal string;  
+  YPaintArcB      - arc fitting inside a rectangle;  
+  YPaintArcF      - filled arc; 
+ 
+4) <b>Other system and graphical functions:</b> 
+ 
+  YDirRead      - receive as the list contents of a directory; 
+  YDirChange    - change a current directory; 
+  YTimeGet      - receive system time; 
+  YTimePause    - pause in milliseconds; 
+  YBeep         - sound signal; 
+  YRandF        - generation of pceudo-random value as 'float'; 
+
+  YBeginGroup   - opening bracket for group of graphic functions; 
+  YEndGroup     - closing bracket; 
+  YImageGet     - save image of rectangular area of the screen into memory; 
+  YImagePut     - draw stored image; 
+  YImageFree    - destroy a stored image by clearing memory; 
+  YSetXorMode   - establish a mode of drawing XOR; 
+  YSetCliping   - set rectangular area with a 'cliping' mode; 
+  YSetFont      - set current font; 
+  YStringW      - length of line in pixels; 
+  YStringH      - height of line in pixels; 
+  YMouseForm    - change of a graphic mouse shape; 
+  YPtInRect     - whether a point inside of a rectangular gets; 
+
+  YColorToScale - find an index of given colour in a palette Scale; 
+  YColor        - set color from standart set;
+  YScale        - set color from solid pallete;
+
+</pre>
+
+<h3><font color="green">Work with Colors</font></h3>  
+ 
+<p align=justify>
+At initializing a graphic system in Yzone there is a reserving and <b>installation</b> 
+of two different <b>colour tables</b>: 
+ 
+<p align=justify>
+<b>the standard set</b> - widely known generally accepted color names (in the current 
+version will be used 16 colours originally fixed behind a graphic pallet 
+Windows VGA); 
+ 
+<center>
+<table align=center width="60%" border=1 cellspacing=5 cellpadding=5> 
+<tr><td bgcolor=black width=20>&nbsp;</td><td>&nbsp;  "black"   </td> 
+    <td bgcolor=green width=20>&nbsp;</td><td>&nbsp;  "green"   </td></tr>     
+<tr><td bgcolor=silver>        &nbsp;</td><td>&nbsp;  "silver"  </td>  
+    <td bgcolor=lime>          &nbsp;</td><td>&nbsp;  "lime"    </td></tr>      
+<tr><td bgcolor=gray>          &nbsp;</td><td>&nbsp;  "gray"    </td>  
+    <td bgcolor=olive>         &nbsp;</td><td>&nbsp;  "olive"   </td></tr>   
+<tr><td bgcolor=white>         &nbsp;</td><td>&nbsp;  "white"   </td>  
+    <td bgcolor=yellow>        &nbsp;</td><td>&nbsp;  "yellow"  </td></tr>   
+<tr><td bgcolor=maroon>        &nbsp;</td><td>&nbsp;  "maroon"  </td> 
+    <td bgcolor=navy>          &nbsp;</td><td>&nbsp;  "navy"    </td></tr>   
+<tr><td bgcolor=red>           &nbsp;</td><td>&nbsp;  "red"     </td>  
+    <td bgcolor=blue>          &nbsp;</td><td>&nbsp;  "blue"    </td></tr>    
+<tr><td bgcolor=purple>        &nbsp;</td><td>&nbsp;  "purple"  </td>
+    <td bgcolor=teal>          &nbsp;</td><td>&nbsp;  "teal"    </td></tr>   
+<tr><td bgcolor=fuchsia>       &nbsp;</td><td>&nbsp;  "fuchsia" </td>
+    <td bgcolor=aqua>          &nbsp;</td><td>&nbsp;  "aqua"    </td></tr>  
+</table> 
+</center>
+
+<p align=justify>
+<b>solid graphic pallet</b> - colour "unidimensional" graphic pallet formed on some 
+law (linear, logarithmic etc.); it is convenient for using for different 
+problems of <b>visualization</b>  of the distributed data. 
+ 
+ 
+<br clear=all><br>
+
+<br clear=all>
+<hr size=4><!-- ---------------------------------------------------------- -->
+<a name="met_more"></a><h3><font size=+2 color="red">
+2. MORE: useful additions and improve GUI functions 
+</h3></font> 
+
+<p align=justify>
+In this section some useful functions are described. They ream <b>capabilities of 
+the "C" language</b> and easy to the programmer his hard work :-) But the main 
+improvements concern graphic functions; in them the following additions are 
+entered: 
+ 
+<menu>
+<li> <b>scalability:</b> before drawing on a screen, all coordinatesand the sizes (in 
+pixels) change pursuant to a given factor of a scale; it allows to not depend 
+on essential miscellaneous screen resolution and always to have a graphic 
+picture of the necessary size. 
+ 
+<li> <b>save in the Meta-format:</b> it is possible to set a mode, at which one all 
+graphic primitives will be saved in some format; in further these calls it is 
+possible to repeat in the same order. 
+ 
+<li> <b>printing in PostScript:</b> to print graphic to the file PS it is possible or 
+directly having set such mode, or from the available Meta-format. 
+</menu> 
+ 
+
+<p>
+<h3><font color="green">Description of some functions: </font></h3> 
+<pre>
+
+1) <b>Imroved graphic functions</b> (with scalling and saving to 
+   Meta and PS formats): 
+
+  YDrawLogo       - logotype library Y/Open; 
+  YDrawLine       - ordinary line ; 
+  YDrawRectB      - rectangular (only border); 
+  YDrawRectF      - rectangular (filled without border); 
+  YDrawRectFB     - rectangular (filled with border); 
+  YDrawTriB       - triangle (only border); 
+  YDrawTriF       - triangle (filled without border); 
+  YDrawTriFB      - triangle (filled with border); 
+  YDrawFourB      - quadrangle  (only border); 
+  YDrawFourF      - quadrangle  (filled without border); 
+  YDrawFourFB     - quadrangle  (filled with border); 
+  YDrawPolyF      - polygon filled; 
+  YDrawCircF      - circle filled; 
+  YDrawXorLine    - line in a mode XOR; 
+  YDrawScale      - palette of colors SCALE as a rectangular; 
+  YDrawColmap     - rectangular color card Colmap; 
+  YDrawColmapB    - too most, but with drawing border; 
+  YDrawSymbol     - special graphic symbols and elements; 
+  YDrawHString    - horizontal string; 
+  YDrawVString    - vertical string; 
+  YDrawStrings    - multilower case horizontal text; 
+  YDrawRectText   - text in centre of a rectangular; 
+  YDrawHStringImp - improved YDrawHString; 
+  YDrawPixel      - single pixel; 
+ 
+2) <b>Other functions:</b>
+
+  YStrCopy      - copying a string variable array; 
+  YStrCmp       - the comparison of two lstring (returns bool value); 
+  YError        - message on error and emergency end; 
+  YWarning      - message on error without emergency end; 
+  YInt          - reduction to a type 'int' with correct round; 
+  YPutInCicl    - reduction 'int' inside of a given interval; 
+  YParInit      - initialization variable from symbolical string; 
+
+3) <b>Function for work with Colmap:</b> 
+ 
+  YColmapCreate    - create; 
+  YColmapInit      - initialize; 
+  YColmapBeginDraw - set a rectangular for a conclusion in Colmap; 
+  YColmapDrawPixel - draw pixel (if gets); 
+  YColmapEndDraw   - finish a mode of drawing in Colmap; 
+  YColmapGet       - get pixel; 
+  YColmapPut       - put pixel; 
+ 
+8) <b>Function for work with 'Meta':</b> 
+ 
+  YMetaCreate - create; 
+  YMetaInit   - initialize; 
+  YMetaBegin  - begin a mode; 
+  YMetaEnd    - finish a mode; 
+  YMetaDrawTo - send for drawing into window; 
+  YMetaToPS   - save into PostScript; 
+  YMetaToScr  - draw in the specified area of the screen; 
+  YMetaW      - get width; 
+  YMeta_dlg   - window function of dialog 'Save_to_PS'; 
+ 
+</pre>
+ 
+
+<br clear=all>
+<hr size=4><!-- ---------------------------------------------------------- -->
+<a name="met_wind"></a><h3><font size=+2 color="red">
+3. WIND: control elements of dialogue
+</h3></font> 
+
+In Yzone all <b>control elements</b> work <b>standardly</b>, except for a <br>  
+field 'DECIMAL', to operate which it is possible only by 'mouse':<br>  
+
+&nbsp;&nbsp;&nbsp;  - pressing the left key - reduces meaning of a field,<br> 
+&nbsp;&nbsp;&nbsp;  - and the pressing right - increases meaning of a field;<br> 
+
+Thus the <b>unitary</b> pressing changes meaning per unit of, and 
+the <b>long</b> pressing will make continuous change, and, theme faster, 
+than further cursor from an initial place is removed! 
+ 
+
+<p>
+<h3><font color="green">Description of some functions: </font></h3> 
+<pre> 
+  YFindFile    - run dialog 'FindFile'; 
+  YMessageBox  - run dialog 'essage'; 
+  YWaitBegin   - start dialog WAIT; 
+  YWaitEnd     - finish dialog WAIT; 
+  YWaitSend    - send the message (how many is made) into WAIT; 
+  YPutWnd      - 'put' a window onto panel LAYOUT; 
+
+  PUSH     - standard button; 
+  CHECK    - element of a type 'tag' (with cross-hair lines); 
+  LIST     - list of chosen elements (string constants); 
+  EDIT     - field of editing string variable; 
+  DECIMAL  - field for change decimal variable; 
+  FLOATS   - field of editing 'float'  variable; 
+  YTEXT    - not edited information textual field; 
+  COLORS   - element for a choice of color; 
+  RAMKA    - universal window with 'line' of control buttons; 
+  SCROLL   - scrolling line (for the various purposes); 
+  DITTO    - empty window procedure; 
+  BOOK     - 'book' with bookmarks; 
+  ABOUT    - standard panel with the information on the authors and program; 
+  PROCESS  - panel with buttons of management by window 'process'; 
+  LAYOUT   - panel for accommodation on it of other windows; 
+
+</pre> 
+
+<p>The brief description of <b>some dialogue blocks</b> is further given. 
+Usually they called as system windows and are certain for performance. 
+ 
+<br clear=all><br><hr><!-- ------------------------- --><br>
+<img src="im/chcolor.gif" align="right" width="335" height="243">
+<font size=+1 color="green"><i><b>Dialogue 'Choise color'</b></i></font><br> 
+<p>
+
+from above - <b>solid graphic pallet</b>,<br> 
+from below - <b>standard set</b>,<br> 
+separately are allocated black and white colour; <br>
+
+<p align=justify>
+For selection, simplly click the left-hand 
+key of the mouse on the necessary colour. 
+ 
+
+<br clear=all><br><hr><!-- ------------------------- --><br>
+<img src="im/saveps.gif" align="right" width="335" height="237">
+<font size=+1 color="green"><i><b>Dialogue 'Save_to_PS'</b></i></font><br> 
+<p>
+Print, and is exacter, save to PostScript. 
+<p>
+<b>Size(mm) -- </b>panel for defining <b>EPS</b> image size; 
+<p>
+<li> it is possible to set in mms; 
+<li> and it is possible to set concerning the size of a standard sheet 
+    of a paper <b>A4</b>; 
+ 
+<br clear=all><br><hr><!-- ------------------------- --><br>
+<img src="im/findfile.gif" align="right" width="335" height="236">
+<font size=+1 color="green"><i><b>Dialogue 'FinfFile'</b></i></font><br> 
+<p> 
+<b>Carries out</b> navigation on directories of file systems and 
+<b>choice of a file</b> for the subsequent work with it. 
+Control -- with the help of standard means <b>(button, mouse, keyboard)</b>. 
+ 
+ 
+<br clear=all><br><hr><!-- ------------------------- --><br>
+<img src="im/message.gif" align="right" width="335" height="237">
+<font size=+1 color="green"><i><b>Dialogue 'Message'</b></i></font><br> 
+<p> 
+To the user <b>some message</b> is given out, on which it is required 
+<i>to answer</i> (for example to press the button "<b>Yes</b>" or "<b>No</b>"). 
+ 
+<br clear=all>
+<hr><!-- ---------------------------------------------------------- -->
+<a name="met_intr"></a><h3><font size=+2 color="red"><center>
+Conclusions
+</center></h3></font> 
+
+<p align=justify>
+You shortly have acquainted with <b>Yzone</b> - generalpurpose cross-platform 
+GUI-library. From set of similar libraries Yzone distinguishes the whole set of 
+the realised <b>original ideas and properties</b>. Yzone - new, dynamically developing 
+library and, unfortunately, it is not yet free from errors and discrepancies, 
+that hereinafter will be corrected. 
+
+<p align=justify>
+Some members of control and input boxes also are <b>in stage of adaptation</b>, but 
+not waiting the terminations of this process, the users have a capability "to 
+be picked up" to the already developed <b>library FLTK</b> 
+(<a href="http://fltk.easysw.com">http://fltk.easysw.com</a>) 
+and to take advantage of its means GUI.  
+ 
+<p align=justify>
+<b>In further</b>, certainly, all deficiencies will be removed, and the <b>interface is 
+advanced</b> in indispensable volumes. The programmer operating Yzone, will forget 
+about existence of different platforms and padding libraries. 
+ 
+<p align=justify>
+<center><b>Only Yzone and you!! &nbsp; Good luck!!</b></center> 
+
+<br>  
+
+<br clear=all>
+<!-- ------------------------------------------------------------------- -->
+</td></tr>
+</table>
+</center>
+
+<!-- ---------------------------BOTTOM---------------------------------- -->
+<br clear=all>
+<table width=100% border=2 cellspacing=0 cellpadding=5>
+<tr align=center>
+  <td width=20% align="center" bgcolor="yellow"> &nbsp;
+  <td align="center" bgcolor="blue"> 
+     <b><font color="yellow">Life Software &nbsp; ( </font> 
+     <font color="yellow" size=-1>
+<!-- hhmts_old start -->
+Last modified: Sun Aug 20 16:37:23 YEKST 2000
+<!-- hhmts_old end -->
+     </font><font color="yellow">)</font></b>
+  <td width=20% align="center" bgcolor="yellow">  
+     <a href="indru.html"><b>TO RUSSIAN</b></a> 
+</table>
+<!-- ---------------------------BOTTOM---------------------------------- -->
+
+</body>
+</html>
