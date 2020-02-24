@@ -20,16 +20,25 @@ FLTK_OPTS = -fno-rtti -fno-exceptions
 FLTK_INCS = -DFLTK -I$(FDIR_ROOT)
 FLTK_LIBS = -L$(FDIR_LIB) -lfltk
 
-YDIR_INC = $(YDIR_ROOT)/include
-YDIR_LIB = $(YDIR_ROOT)/lib
+#YDIR_INC = $(YDIR_ROOT)/include
+#YDIR_LIB = $(YDIR_ROOT)/lib
+
+YDIR_INC = $(YDIR_ROOT)/src
+YDIR_LIB = $(YDIR_ROOT)/src
+
 YZONE_OPTS = -w -g 
 YZONE_INCS = -I$(YDIR_INC)
 YZONE_LIBS = $(YDIR_LIB)/y_zone.a
 
 XDIR_LIB = $(XDIR_ROOT)/lib
-UNIX_CC = c++ 
+XDIR_XDIR_LIB = $(XDIR_ROOT)/lib
+INC = $(XDIR_ROOT)/include
+
+#UNIX_CC = c++
+UNIX_CC = gcc
+
 #UNIX_OPTS = -malign-double
-UNIX_INCS = 
+UNIX_INCS = -L$(XDIR_INC)
 UNIX_LIBS = -L$(XDIR_LIB) -lX11 -lXext -lm 
 
 CYGWIN_CC = gcc 
@@ -50,8 +59,8 @@ CYGWIN_LIBS = -lcygwin -lgdi32 -luser32 -lmsvcrt -lwsock32 -lm -mno-cygwin -mwin
 #                         ADD = (FLTK or nothing)
 # ---------------------------------------------- 
 
-#SYS  = UNIX
-SYS  = CYGWIN
+SYS  = UNIX
+#SYS  = CYGWIN
 
 #ADD = FLTK
 
